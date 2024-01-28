@@ -1,0 +1,390 @@
+TASK 1
+
+
+Here's a C++ implementation of the functions and the main function described:
+
+
+#include <iostream>
+#include <vector>
+
+// Function to calculate the sum of integers in the array
+int summation(const std::vector<int>& arr) {
+    int sum = 0;
+    for (int num : arr) {
+        sum += num;
+    }
+    return sum;
+}
+
+// Function to find the maximum integer in the array
+int maximum(const std::vector<int>& arr) {
+    if (arr.empty()) {
+        // If the array is empty, return a default value or handle the case as needed
+        // Here, we return 0, but you can choose a different approach based on requirements
+        return 0;
+    }
+    int maxNum = arr[0];
+    for (int i = 1; i < arr.size(); ++i) {
+        if (arr[i] > maxNum) {
+            maxNum = arr[i];
+        }
+    }
+    return maxNum;
+}
+
+int main() {
+    int n;
+    std::cout << "Enter the length of the array: ";
+    std::cin >> n;
+
+    std::vector<int> arr(n);
+    std::cout << "Enter " << n << " integers:" << std::endl;
+    for (int i = 0; i < n; ++i) {
+        std::cin >> arr[i];
+    }
+
+    int sum = summation(arr);
+    int maxNum = maximum(arr);
+
+    std::cout << "Sum of the integers: " << sum << std::endl;
+    std::cout << "Maximum integer: " << maxNum << std::endl;
+
+    return 0;
+}
+
+
+TASK 2
+
+
+This a C++ implementation of the system using arrays and structs:
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Define a struct for course
+struct Course {
+    string course_code;
+    string course_name;
+};
+
+// Define a struct for grade
+struct Grade {
+    int mark;
+    char the_grade;
+};
+
+// Define a struct for student
+struct Student {
+    string reg_number;
+    string name;
+    int age;
+    Course course;
+    Grade grade;
+};
+
+// Function to add a new student
+void addStudent(Student students[], int& numStudents) {
+    if (numStudents < 40) {
+        cout << "Enter registration number: ";
+        cin >> students[numStudents].reg_number;
+        cout << "Enter name: ";
+        cin.ignore();
+        getline(cin, students[numStudents].name);
+        cout << "Enter age: ";
+        cin >> students[numStudents].age;
+        cout << "Enter course code: ";
+        cin >> students[numStudents].course.course_code;
+        cout << "Enter course name: ";
+        cin.ignore();
+        getline(cin, students[numStudents].course.course_name);
+        // Initialize grade mark to -1 to indicate it's not set yet
+        students[numStudents].grade.mark = -1;
+        numStudents++;
+    } else {
+        cout << "Maximum number of students reached." << endl;
+    }
+}
+
+// Function to edit a student's details
+void editStudent(Student students[], int numStudents) {
+    string regNum;
+    cout << "Enter registration number of the student to edit: ";
+    cin >> regNum;
+    for (int i = 0; i < numStudents; ++i) {
+        if (students[i].reg_number == regNum) {
+            cout << "Enter new registration number: ";
+            cin >> students[i].reg_number;
+            cout << "Enter new name: ";
+            cin.ignore();
+            getline(cin, students[i].name);
+            cout << "Enter new age: ";
+            cin >> students[i].age;
+            cout << "Enter new course code: ";
+            cin >> students[i].course.course_code;
+            cout << "Enter new course name: ";
+            cin.ignore();
+            getline(cin, students[i].course.course_name);
+            return;
+        }
+    }
+    cout << "Student not found." << endl;
+}
+
+// Function to add marks and calculate grades for a student
+void addMarks(Student students[], int numStudents) {
+    string regNum;
+    cout << "Enter registration number of the student to add marks: ";
+    cin >> regNum;
+    for (int i = 0; i < numStudents; ++i) {
+        if (students[i].reg_number == regNum) {
+            cout << "Enter mark: ";
+            cin >> students[i].grade.mark;
+            // Calculate grade based on mark
+            if (students[i].grade.mark > 69) {
+                students[i].grade.the_grade = 'A';
+            } else if (students[i].grade.mark > 59) {
+                students[i].grade.the_grade = 'B';
+            } else if (students[i].grade.mark > 49) {
+                students[i].grade.the_grade = 'C';
+            } else if (students[i].grade.mark > 39) {
+                students[i].grade.the_grade = 'D';
+            } else {
+                students[i].grade.the_grade = 'E';
+            }
+            return;
+        }
+    }
+    cout << "Student not found." << endl;
+}
+
+// Function to display student details
+void displayStudents(const Student students[], int numStudents) {
+    cout << "Registered students:" << endl;
+    for (int i = 0; i < numStudents; ++i) {
+        cout << "Registration Number: " << students[i].reg_number << endl;
+        cout << "Name: " << students[i].name << endl;
+        cout << "Age: " << students[i].age << endl;
+        cout << "Course Code: " << students[i].course.course_code << endl;
+        cout << "Course Name: " << students[i].course.course_name << endl;
+        if (students[i].grade.mark != -1) {
+            cout << "Mark: " << students[i].grade.mark << endl;
+            cout << "Grade: " << students[i].grade.the_grade << endl;
+        } else {
+            cout << "Marks not added yet." << endl;
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    Student students[40];
+    int numStudents = 0;
+    int choice;
+
+    do {
+        cout << "Menu:" << endl;
+        cout << "1. Add a student" << endl;
+        cout << "2. Edit student details" << endl;
+        cout << "3. Add marks and calculate grades" << endl;
+        cout << "4. Display students" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1:
+                addStudent(students, numStudents);
+                break;
+            case 2:
+                editStudent(students, numStudents);
+                break;
+            case 3:
+                addMarks(students, numStudents);
+                break;
+            case 4:
+                displayStudents(students, numStudents);
+                break;
+            case 5:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
+
+TASK 3
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Class for Course
+class Course {
+public:
+    string course_code;
+    string course_name;
+};
+
+// Class for Grade
+class Grade {
+public:
+    int mark;
+    char the_grade;
+
+    // Constructor to initialize mark to -1
+    Grade() : mark(-1) {}
+
+    // Function to calculate grade based on mark
+    void calculateGrade() {
+        if (mark > 69) {
+            the_grade = 'A';
+        } else if (mark > 59) {
+            the_grade = 'B';
+        } else if (mark > 49) {
+            the_grade = 'C';
+        } else if (mark > 39) {
+            the_grade = 'D';
+        } else {
+            the_grade = 'E';
+        }
+    }
+};
+
+// Class for Student
+class Student {
+public:
+    string reg_number;
+    string name;
+    int age;
+    Course course;
+    Grade grade;
+
+    // Function to add student details
+    void addDetails() {
+        cout << "Enter registration number: ";
+        cin >> reg_number;
+        cout << "Enter name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter age: ";
+        cin >> age;
+        cout << "Enter course code: ";
+        cin >> course.course_code;
+        cout << "Enter course name: ";
+        cin.ignore();
+        getline(cin, course.course_name);
+    }
+
+    // Function to edit student details
+    void editDetails() {
+        cout << "Enter new registration number: ";
+        cin >> reg_number;
+        cout << "Enter new name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter new age: ";
+        cin >> age;
+        cout << "Enter new course code: ";
+        cin >> course.course_code;
+        cout << "Enter new course name: ";
+        cin.ignore();
+        getline(cin, course.course_name);
+    }
+
+    // Function to add marks for a student
+    void addMarks() {
+        cout << "Enter mark: ";
+        cin >> grade.mark;
+        grade.calculateGrade();
+    }
+
+    // Function to display student details
+    void displayDetails() {
+        cout << "Registration Number: " << reg_number << endl;
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Course Code: " << course.course_code << endl;
+        cout << "Course Name: " << course.course_name << endl;
+        if (grade.mark != -1) {
+            cout << "Mark: " << grade.mark << endl;
+            cout << "Grade: " << grade.the_grade << endl;
+        } else {
+            cout << "Marks not added yet." << endl;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Student students[40];
+    int numStudents = 0;
+    int choice;
+
+    do {
+        cout << "Menu:" << endl;
+        cout << "1. Add a student" << endl;
+        cout << "2. Edit student details" << endl;
+        cout << "3. Add marks and calculate grades" << endl;
+        cout << "4. Display students" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice) {
+            case 1:
+                if (numStudents < 40) {
+                    students[numStudents].addDetails();
+                    numStudents++;
+                } else {
+                    cout << "Maximum number of students reached." << endl;
+                }
+                break;
+            case 2:
+                string regNum;
+                cout << "Enter registration number of the student to edit: ";
+                cin >> regNum;
+                for (int i = 0; i < numStudents; ++i) {
+                    if (students[i].reg_number == regNum) {
+                        students[i].editDetails();
+                        break;
+                    }
+                }
+                break;
+            case 3:
+                string regNumMarks;
+                cout << "Enter registration number of the student to add marks: ";
+                cin >> regNumMarks;
+                for (int i = 0; i < numStudents; ++i) {
+                    if (students[i].reg_number == regNumMarks) {
+                        students[i].addMarks();
+                        break;
+                    }
+                }
+                break;
+            case 4:
+                cout << "Registered students:" << endl;
+                for (int i = 0; i < numStudents; ++i) {
+                    students[i].displayDetails();
+                }
+                break;
+            case 5:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
+
+
+
